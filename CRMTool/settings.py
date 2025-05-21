@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p9&e07ltcc4ghu**l0b23#huhmldm#8x)fskp)w=$nd62#yah@'
 DEBUG = True
 
-ALLOWED_HOSTS = ["crmbussiness.up.railway.app","testcrmback.up.railway.app","localhost","127.0.0.1",]  # Set specific Railway domain in production for security
+ALLOWED_HOSTS = ["testcrm.up.railway.app","testcrmback.up.railway.app","localhost","127.0.0.1",]  # Set specific Railway domain in production for security
 
 DATABASES_URL = "postgresql://postgres:TPJqJRKtgIpvAQtsCCMAtUcCUJLKCjsb@trolley.proxy.rlwy.net:42434/railway"
 # Installed apps
@@ -163,14 +163,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://testcrmback.up.railway.app",
-    "https://crmbussiness.up.railway.app",
+    "https://testcrm.up.railway.app",
     
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://bussinesstoolcrm.up.railway.app",
-    "https://crmbussiness.up.railway.app",
+    "https://testcrmback.up.railway.app",
+    "https://testcrm.up.railway.app",
     
 ]
 
