@@ -53,14 +53,191 @@ from twilio.rest import Client
 from django.core.files.base import ContentFile
 from .models import MatchingDataPdf
 
-TWILIO_ACCOUNT_SID = "ACe1b80056ccbacae1f088ba119ce08ccd"  # Replace with your Twilio SID
-TWILIO_AUTH_TOKEN = "db0c7f6ea998625a89e9a42e0e6069c3"  # Replace with your Twilio auth token
+
 TWILIO_WHATSAPP_FROM = "whatsapp:+919562080200"
 TWILIO_GLM_TEMPLATE_SID = "HX63f6fd8b9b20a9374bcb48bb6c15ca77"  # Replace this
 TWILIO_MATCHEDDATA_TEMPLATE_SID = "HXeadbd83ccd838cb5a7386f8857e9d7f4" 
 
-client_twilio = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
+
+
+
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def receive_google_form_property_sale(request):
+    try:
+        data = request.data
+
+        lead = DataBank.objects.create(
+            timestamp=timezone.now(),
+            name=data.get("name"),
+            phonenumber=data.get("phonenumber"),
+            district=data.get("district"),
+            place=data.get("place"),
+            address=data.get("address", ""),
+            mode_of_property=data.get("mode_of_property"),
+            demand_price=data.get("demand_price"),
+            area_in_sqft=data.get("area_in_sqft", ""),
+            area_in_cent=data.get("area_in_cent", ""),
+            building_roof=data.get("building_roof", ""),
+            number_of_floors=data.get("number_of_floors", ""),
+            building_bhk=data.get("building_bhk", ""),
+            additional_note=data.get("additional_note", ""),
+            purpose="For Selling a Property",  # Static
+            lead_category=data.get("lead_category", "Google Form"),
+            status="Pending",
+            stage="Pending"
+        )
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "notifications_group",
+            {
+                "type": "send_notification",
+                "message": f"New lead received! Name: {lead.name}, District: {lead.district}, Purpose: {lead.purpose}",
+            },
+        )
+
+        return Response({"message": "Property Sale lead saved successfully."}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def receive_google_form_forrent(request):
+    try:
+        data = request.data
+
+        lead = DataBank.objects.create(
+            timestamp=timezone.now(),
+            name=data.get("name"),
+            phonenumber=data.get("phonenumber"),
+            district=data.get("district"),
+            place=data.get("place"),
+            address=data.get("address", ""),
+            mode_of_property=data.get("mode_of_property"),
+            demand_price=data.get("demand_price"),
+            advance_price=data.get("advance_price"),
+            area_in_sqft=data.get("area_in_sqft", ""),
+            area_in_cent=data.get("area_in_cent", ""),
+            building_roof=data.get("building_roof", ""),
+            number_of_floors=data.get("number_of_floors", ""),
+            building_bhk=data.get("building_bhk", ""),
+            additional_note=data.get("additional_note", ""),
+            purpose="For Rental or Lease",
+            lead_category=data.get("lead_category", "Google Form"),
+            status="Pending",
+            stage="Pending",
+        )
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "notifications_group",
+            {
+                "type": "send_notification",
+                "message": f"New lead received! Name: {lead.name}, District: {lead.district}, Purpose: {lead.purpose}",
+            },
+        )
+
+        return Response({"message": "Data saved successfully"}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def receive_google_form_buyer(request):
+    try:
+        data = request.data
+
+        lead = DataBank.objects.create(
+            timestamp=timezone.now(),
+            name=data.get("name"),
+            phonenumber=data.get("phonenumber"),
+            district=data.get("district"),
+            place=data.get("place"),
+            address=data.get("address", ""),
+            mode_of_property=data.get("mode_of_property"),
+            demand_price=data.get("demand_price"),
+            area_in_sqft=data.get("area_in_sqft", ""),
+            area_in_cent=data.get("area_in_cent", ""),
+            building_roof=data.get("building_roof", ""),
+            number_of_floors=data.get("number_of_floors", ""),
+            building_bhk=data.get("building_bhk", ""),
+            additional_note=data.get("additional_note", ""),
+            purpose="For Buying a Property",
+            lead_category=data.get("lead_category", "Google Form"),
+            status="Pending",
+            stage="Pending",
+        )
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "notifications_group",
+            {
+                "type": "send_notification",
+                "message": f"New lead received! Name: {lead.name}, District: {lead.district}, Purpose: {lead.purpose}",
+            },
+        )
+
+        return Response({"message": "Lead saved successfully."}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def receive_google_form_rentseeker(request):
+    try:
+        data = request.data
+
+        # Save to DB
+        lead = DataBank.objects.create(
+            timestamp=timezone.now(),
+            name=data.get("name"),
+            phonenumber=data.get("phonenumber"),
+            district=data.get("district"),
+            place=data.get("place"),
+            address=data.get("address", ""),
+            mode_of_property=data.get("mode_of_property"),
+            demand_price=data.get("demand_price"),
+            location_preferences=data.get("location_preferences", ""),
+            additional_note=data.get("additional_note", ""),
+            purpose="Looking to Rent or Lease Property",
+            lead_category=data.get("lead_category", "Google Form"),
+            status=data.get("status", "Pending"),
+            stage=data.get("stage", "Pending"),
+        )
+
+        # Send WebSocket Notification
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "notifications_group",
+            {
+                "type": "send_notification",
+                "message": f"New lead received! Name: {lead.name}, District: {lead.district}, Purpose: {lead.purpose}",
+            },
+        )
+
+        return Response({"message": "Data saved successfully"}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsSalesManagerUser])

@@ -11,10 +11,14 @@ from .views import (get_followeddata_salesmanager,get_detailed_data_salesmanager
                     Follow_lead_data,Update_data_stage,SM_monthly_performance,Admin_crm_performance_graph,Admin_graph_Leads,
                     followed_leads_admin,get_successfullyclosed_leads,get_unsuccessfullyclosed_leads,get_pending_leads,
                     admin_leads_graph_data,lead_category_graph,lead_category_current_month,Sales_lead_category_graph,Sales_lead_category_current_month,
-                    )
+                    receive_google_form_rentseeker,receive_google_form_buyer,receive_google_form_forrent,receive_google_form_property_sale)
 
 
 urlpatterns = [
+    path('receive_google_form_property_sale/',receive_google_form_property_sale,name="receive_google_form_property_sale"),
+    path('receive_google_form_forrent/',receive_google_form_forrent,name="receive_google_form_forrent"),
+    path('receive_google_form_buyer/',receive_google_form_buyer,name="receive_google_form_buyer"),
+    path('receive_google_form_rentseeker/',receive_google_form_rentseeker,name="receive_google_form_rentseeker"),
     path("sales_lead_category_current_month/",Sales_lead_category_current_month,name="Sales_lead_category_current_month,"),
     path("sales_lead_category_graph/",Sales_lead_category_graph,name="Sales_lead_category_graph"),
     path('lead_category_current_month/',lead_category_current_month,name="lead_category_current_month"),
